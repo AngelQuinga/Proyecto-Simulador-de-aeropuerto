@@ -5,15 +5,14 @@ import Aeropuerto.utils.FlightComparator;
 import java.util.*;
 
 public class AirportSimulator {
-    // Estructuras de Datos
-    private PriorityQueue<Flight> landingQueue; // Para aterrizajes (Heap)
-    private Queue<Flight> takeoffQueue;         // Para despegues (LinkedList FIFO)
-    private Stack<Baggage> baggageStack;        // Para equipaje (LIFO)
+    
+    private PriorityQueue<Flight> landingQueue; 
+    private Queue<Flight> takeoffQueue;         
+    private Stack<Baggage> baggageStack;        
 
     private Runway runwayLanding;
     private Runway runwayTakeoff;
 
-    // Configuracion
     private static final int LANDING_DURATION = 3;
     private static final int TAKEOFF_DURATION = 2;
     private static final int BAGGAGE_PER_FLIGHT = 50;
@@ -52,13 +51,13 @@ public class AirportSimulator {
         currentStep++;
         System.out.println("\n--- PASO DE SIMULACIÓN " + currentStep + " ---");
 
-        // 1. Avanzar tiempo en pistas
+       
         Flight landed = runwayLanding.tick();
         Flight departed = runwayTakeoff.tick();
 
-        // 2. Gestionar fin de aterrizaje -> Mover equipaje a la pila
+        
         if (landed != null) {
-            System.out.println("✅ ATERRIZAJE COMPLETADO: " + landed.getId());
+            System.out.println(" ATERRIZAJE COMPLETADO: " + landed.getId());
             System.out.println("   -> Descargando " + BAGGAGE_PER_FLIGHT + " maletas a la pila.");
             for (int i = 0; i < BAGGAGE_PER_FLIGHT; i++) {
                 baggageStack.push(new Baggage(landed.getId()));
@@ -67,14 +66,14 @@ public class AirportSimulator {
 
         // 3. Gestionar fin de despegue
         if (departed != null) {
-            System.out.println("✈️ DESPEGUE COMPLETADO: " + departed.getId());
+            System.out.println(" DESPEGUE COMPLETADO: " + departed.getId());
         }
 
         // 4. Asignar nueva nave a Pista Aterrizaje (Si está libre)
         if (runwayLanding.isFree() && !landingQueue.isEmpty()) {
             Flight next = landingQueue.poll();
             runwayLanding.assignFlight(next, LANDING_DURATION);
-            System.out.println("⚠️ INICIANDO ATERRIZAJE: " + next.getId() + 
+            System.out.println(" INICIANDO ATERRIZAJE: " + next.getId() + 
                 (next.isEmergency() ? " [EMERGENCIA]" : ""));
         }
 
@@ -82,15 +81,15 @@ public class AirportSimulator {
         if (runwayTakeoff.isFree() && !takeoffQueue.isEmpty()) {
             Flight next = takeoffQueue.poll();
             runwayTakeoff.assignFlight(next, TAKEOFF_DURATION);
-            System.out.println("🛫 INICIANDO DESPEGUE: " + next.getId());
+            System.out.println("INICIANDO DESPEGUE: " + next.getId());
         }
 
         // 6. Procesar equipaje (Sacar 1 de la pila)
         if (!baggageStack.isEmpty()) {
             Baggage b = baggageStack.pop();
-            System.out.println("🧳 Equipaje procesado: " + b + ". (Restantes en pila: " + baggageStack.size() + ")");
+            System.out.println(" Equipaje procesado: " + b + ". (Restantes en pila: " + baggageStack.size() + ")");
         } else {
-            System.out.println("🧳 No hay equipaje pendiente.");
+            System.out.println(" No hay equipaje pendiente.");
         }
     }
 
