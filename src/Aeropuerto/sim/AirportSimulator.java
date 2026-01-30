@@ -41,11 +41,11 @@ public class AirportSimulator {
         Flight departed = runwayTakeoff.tick();
 
         if (landed != null) {
-            System.out.println("✅ ATERRIZAJE COMPLETADO: " + landed.getId());
+            System.out.println("ATERRIZAJE COMPLETADO: " + landed.getId());
             descargarMaletas(landed.getId());
         }
         if (departed != null) {
-            System.out.println("✈️ DESPEGUE COMPLETADO: " + departed.getId());
+            System.out.println("DESPEGUE COMPLETADO: " + departed.getId());
         }
     }
 
@@ -54,7 +54,7 @@ public class AirportSimulator {
             Flight next = landingQueue.poll(); // Saca por prioridad
             runwayLanding.assignFlight(next, LANDING_TIME);
             String msg = next.isEmergency() ? " [EMERGENCIA]" : "";
-            System.out.println("⚠️ INICIANDO ATERRIZAJE: " + next.getId() + msg);
+            System.out.println("INICIANDO ATERRIZAJE: " + next.getId() + msg);
         }
     }
 
@@ -62,7 +62,7 @@ public class AirportSimulator {
         if (runwayTakeoff.isFree() && !takeoffQueue.isEmpty()) {
             Flight next = takeoffQueue.poll(); // Saca por orden de llegada (FIFO)
             runwayTakeoff.assignFlight(next, TAKEOFF_TIME);
-            System.out.println("🛫 INICIANDO DESPEGUE: " + next.getId());
+            System.out.println("INICIANDO DESPEGUE: " + next.getId());
         }
     }
 
@@ -76,9 +76,9 @@ public class AirportSimulator {
     private void procesarUnEquipaje() {
         if (!baggageStack.isEmpty()) {
             Baggage b = baggageStack.pop(); // Último en entrar, primero en salir
-            System.out.println("🧳 Procesando: " + b + ". (Pila: " + baggageStack.size() + ")");
+            System.out.println("Procesando: " + b + ". (Pila: " + baggageStack.size() + ")");
         } else {
-            System.out.println("🧳 Sin equipaje pendiente.");
+            System.out.println("Sin equipaje pendiente.");
         }
     }
 
